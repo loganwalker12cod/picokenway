@@ -54,22 +54,27 @@
         }
 
         header {
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             padding-top: env(safe-area-inset-top, 0px);
             background: transparent;
-            margin-bottom: calc(-64px - env(safe-area-inset-top, 0px));
-            z-index: 5
+            z-index: 100;
+            transition: background-color 0.3s ease, backdrop-filter 0.3s ease
         }
 
         header.sc {
-            background: rgba(13, 13, 13, .6);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px)
+            background: rgba(13, 13, 13, 0.75);
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08)
         }
 
         header.open {
-            background: var(--bg)
+            background: rgba(13, 13, 13, 0.95);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px)
         }
 
         .hd {
@@ -94,39 +99,53 @@
             color: var(--dim)
         }
 
+        .navlinks a:hover {
+            color: var(--ink)
+        }
+
         .burger {
             display: none;
             background: none;
             border: 0;
             cursor: pointer;
-            width: 28px;
-            height: 20px;
+            width: 44px;
+            height: 44px;
             flex-direction: column;
-            justify-content: space-between
+            justify-content: center;
+            align-items: center;
+            gap: 6px
         }
 
         .burger span {
             display: block;
-            height: 1px;
-            background: var(--ink)
+            height: 2px;
+            width: 24px;
+            background: var(--ink);
+            border-radius: 2px;
+            transition: all 0.3s ease
         }
 
         .dd {
             display: none;
             flex-direction: column;
             font-family: var(--sans);
-            font-size: 15px;
-            color: var(--dim)
+            font-size: 16px;
+            color: var(--ink);
+            padding: 0 20px 24px 20px
         }
 
         .dd a {
-            padding: 14px 0;
-            border-bottom: 1px solid var(--line)
+            padding: 16px 0;
+            border-bottom: 1px solid var(--line);
+            color: var(--ink)
+        }
+
+        .dd a:hover {
+            color: var(--accent)
         }
 
         .dd.open {
-            display: flex;
-            background: var(--bg)
+            display: flex
         }
 
         .eyebrow {
@@ -315,6 +334,11 @@
             font-size: 14px
         }
 
+        .btn:hover {
+            background: var(--ink);
+            color: var(--bg)
+        }
+
         footer {
             padding: 24px 0 calc(56px + env(safe-area-inset-bottom, 0px))
         }
@@ -358,15 +382,11 @@
             }
 
             .burger {
-                display: flex;
-                width: 44px;
-                height: 44px;
-                padding: 12px 8px;
-                margin-right: -8px
+                display: flex
             }
 
             .hero {
-                padding: 110px 0 48px
+                padding: 120px 0 48px
             }
 
             .big {
@@ -403,12 +423,24 @@
         <div class="w">
             <div class="hd">
                 <a class="logo" href="#">Kenway</a>
-                <nav class="navlinks"><a href="#specs">Specs</a><a href="#does">Features</a><a href="#chat">Chat</a><a
-                        href="#limits">Limits</a></nav>
-                <button class="burger" id="b" aria-label="Menu"><span></span><span></span><span></span></button>
+                <nav class="navlinks">
+                    <a href="#specs">Specs</a>
+                    <a href="#does">Features</a>
+                    <a href="#chat">Chat</a>
+                    <a href="#limits">Limits</a>
+                </nav>
+                <button class="burger" id="b" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
-            <div class="dd" id="d"><a href="#specs">Specs</a><a href="#does">Features</a><a href="#chat">Chat</a><a
-                    href="#limits">Limits</a></div>
+            <div class="dd" id="d">
+                <a href="#specs">Specs</a>
+                <a href="#does">Features</a>
+                <a href="#chat">Chat</a>
+                <a href="#limits">Limits</a>
+            </div>
         </div>
     </header>
 
@@ -534,10 +566,21 @@
 
     <script>
         var h = document.getElementById('h'), d = document.getElementById('d');
-        document.getElementById('b').onclick = function () { d.classList.toggle('open'); h.classList.toggle('open') };
-        d.querySelectorAll('a').forEach(function (a) { a.onclick = function () { d.classList.remove('open'); h.classList.remove('open') } });
-        function f() { h.classList.toggle('sc', window.scrollY > 10) }
-        window.addEventListener('scroll', f); f();
+        document.getElementById('b').onclick = function () { 
+            d.classList.toggle('open'); 
+            h.classList.toggle('open'); 
+        };
+        d.querySelectorAll('a').forEach(function (a) { 
+            a.onclick = function () { 
+                d.classList.remove('open'); 
+                h.classList.remove('open'); 
+            }; 
+        });
+        function f() { 
+            h.classList.toggle('sc', window.scrollY > 10); 
+        }
+        window.addEventListener('scroll', f); 
+        f();
     </script>
 </body>
 
