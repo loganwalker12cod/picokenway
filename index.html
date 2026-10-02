@@ -19,14 +19,12 @@
             --line: #262626;
             --serif: 'Lora', Georgia, 'Iowan Old Style', 'Times New Roman', serif;
             --disp: 'Lora', Georgia, 'Times New Roman', serif;
-            --sans: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-            box-sizing: border-box;
-            padding-top: env(safe-area-inset-top, 0px);
-            padding-bottom: env(safe-area-inset-bottom, 0px)
+            --sans: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif
         }
 
         html {
-            scroll-padding-top: env(safe-area-inset-top, 0px)
+            scroll-padding-top: calc(64px + env(safe-area-inset-top, 0px));
+            overflow-x: hidden
         }
 
         * {
@@ -40,7 +38,8 @@
             color: var(--ink);
             font-family: var(--serif);
             font-size: 17px;
-            line-height: 1.65
+            line-height: 1.65;
+            overflow-x: hidden
         }
 
         a {
@@ -56,9 +55,10 @@
 
         header {
             position: sticky;
-            top: env(safe-area-inset-top, 0px);
+            top: 0;
+            padding-top: env(safe-area-inset-top, 0px);
             background: transparent;
-            margin-bottom: -65px;
+            margin-bottom: calc(-64px - env(safe-area-inset-top, 0px));
             z-index: 5
         }
 
@@ -66,6 +66,10 @@
             background: rgba(13, 13, 13, .6);
             -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px)
+        }
+
+        header.open {
+            background: var(--bg)
         }
 
         .hd {
@@ -312,7 +316,7 @@
         }
 
         footer {
-            padding: 24px 0 56px
+            padding: 24px 0 calc(56px + env(safe-area-inset-bottom, 0px))
         }
 
         .fl {
@@ -333,7 +337,7 @@
 
         @media(max-width:800px) {
             .split {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 28px;
                 padding-top: 64px
             }
@@ -346,7 +350,7 @@
 
         @media(max-width:640px) {
             .w {
-                padding: 0 24px
+                padding: 0 20px
             }
 
             .navlinks {
@@ -354,19 +358,41 @@
             }
 
             .burger {
-                display: flex
+                display: flex;
+                width: 44px;
+                height: 44px;
+                padding: 12px 8px;
+                margin-right: -8px
             }
 
             .hero {
-                padding: 120px 0 56px
+                padding: 110px 0 48px
+            }
+
+            .big {
+                font-size: clamp(84px, 26vw, 140px)
+            }
+
+            .spec {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px
             }
 
             .spec span:last-child {
-                font-size: 26px
+                font-size: 24px
             }
 
             .item {
-                grid-template-columns: 40px 1fr
+                grid-template-columns: 36px 1fr
+            }
+
+            .tr p {
+                font-size: 18px
+            }
+
+            .cta {
+                padding: 72px 0 56px
             }
         }
     </style>
@@ -507,8 +533,11 @@
     </footer>
 
     <script>
-        document.getElementById('b').onclick = function () { document.getElementById('d').classList.toggle('open') };
-        var h = document.getElementById('h'); function f() { h.classList.toggle('sc', window.scrollY > 10) } window.addEventListener('scroll', f); f();
+        var h = document.getElementById('h'), d = document.getElementById('d');
+        document.getElementById('b').onclick = function () { d.classList.toggle('open'); h.classList.toggle('open') };
+        d.querySelectorAll('a').forEach(function (a) { a.onclick = function () { d.classList.remove('open'); h.classList.remove('open') } });
+        function f() { h.classList.toggle('sc', window.scrollY > 10) }
+        window.addEventListener('scroll', f); f();
     </script>
 </body>
 
